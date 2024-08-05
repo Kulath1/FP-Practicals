@@ -1,33 +1,24 @@
-object Fibonacci {
+import scala.io.StdIn.readLine
 
-  // Function to calculate the nth Fibonacci number recursively
-  def fibonacci(n: Int): Int = n match {
-    case 0 => 0   // Base case: Fibonacci(0) = 0
-    case 1 => 1   // Base case: Fibonacci(1) = 1
-    case _ => {
-      val prev1 = fibonacci(n - 1)
-      val prev2 = fibonacci(n - 2)
-      prev1 + prev2   // Recursive case: Fibonacci(n) = Fibonacci(n-1) + Fibonacci(n-2)
-    }
+object Main extends App {
+
+  def isPrime(n: Int): Boolean = {
+    if (n <= 1) false
+    else if (n == 2) true
+    else !(2 to Math.sqrt(n).toInt).exists(i => n % i == 0)
   }
 
-  // Function to print the first n Fibonacci numbers
-  def printFibonacci(n: Int): Unit = {
-    if (n <= 0) {
-      println("Invalid input. Please provide a positive integer.")
-    } else {
-      println(s"First $n Fibonacci numbers:")
-      for (i <- 0 until n) {
-        val fibNumber = fibonacci(i)
-        print(fibNumber + " ")
-      }
-      println() // Print newline after the sequence
-    }
+  def filterPrime(numbers: List[Int]): List[Int] = {
+    numbers.filter(n => isPrime(n))
   }
 
-  def main(args: Array[String]): Unit = {
-    // Example usage
-    val n = 10  // Number of Fibonacci numbers to print
-    printFibonacci(n)
+  def readIntListFromUser(): List[Int] = {
+    println("Enter a list of integers separated by spaces:")
+    val input = readLine()
+    input.split(" ").toList.map(_.toInt)
   }
+
+  val inputList = readIntListFromUser()
+  val outputList = filterPrime(inputList)
+  println(s"Filtered prime numbers: $outputList")
 }
