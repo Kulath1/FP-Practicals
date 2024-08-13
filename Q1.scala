@@ -1,17 +1,37 @@
-import scala.io.StdIn.readLine
+object CaesarCipherExample extends App {
 
-object Main extends App {
-  def filterEvenNumbers(numbers: List[Int]): List[Int] = {
-    numbers.filter(n => n % 2 == 0)
+  def encrypt(text: String, shift: Int): String = {
+    text.map { char =>
+      if (char.isLetter) {
+        val base = if (char.isLower) 'a' else 'A'
+        ((char - base + shift) % 26 + base).toChar
+      } else {
+        char
+      }
+    }
   }
 
-  def readIntListFromUser(): List[Int] = {
-    println("Enter a list of integers separated by spaces:")
-    val input = readLine()
-    input.split(" ").toList.map(_.toInt)
+  def decrypt(text: String, shift: Int): String = {
+    text.map { char =>
+      if (char.isLetter) {
+        val base = if (char.isLower) 'a' else 'A'
+        ((char - base - shift + 26) % 26 + base).toChar
+      } else {
+        char
+      }
+    }
   }
 
-  val inputList = readIntListFromUser()
-  val outputList = filterEvenNumbers(inputList)
-  println(s"Filtered even numbers: $outputList")
+  def cipher(func: (String, Int) => String, text: String, shift: Int): String = {
+    func(text, shift)
+  }
+
+  val text = "Hello, World!"
+  val shift = 3
+
+  val encryptedText = cipher(encrypt, text, shift)
+  println(s"Encrypted: $encryptedText")  // "Khoor, Zruog!"
+
+  val decryptedText = cipher(decrypt, encryptedText, shift)
+  println(s"Decrypted: $decryptedText")  // "Hello, World!"
 }
