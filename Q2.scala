@@ -1,16 +1,26 @@
-object NumberCategorizer {
+import scala.io.StdIn.readLine
+
+object NumberClassifier {
   def main(args: Array[String]): Unit = {
-    println("Enter an integer:")
-    val input = scala.io.StdIn.readInt()
 
-    val isMultipleOfThree = (n: Int) => n % 3 == 0
-    val isMultipleOfFive = (n: Int) => n % 5 == 0
+    println("Please enter an integer:")
+    val inputStr = readLine()
 
-    input match {
-      case x if isMultipleOfThree(x) && isMultipleOfFive(x) => println("Multiple of Both Three and Five")
-      case x if isMultipleOfThree(x) => println("Multiple of Three")
-      case x if isMultipleOfFive(x) => println("Multiple of Five")
-      case _ => println("Not a Multiple of Three or Five")
+    try {
+      val input = inputStr.toInt
+
+      val classifyNumber: Int => String = (num: Int) => num match {
+        case x if x <= 0 => "Negative/Zero is input"
+        case x if x % 2 == 0 => "Even number is given"
+        case _ => "Odd number is given"
+      }
+      
+      val result = classifyNumber(input)
+      println(result)
+
+    } catch {
+      case _: NumberFormatException => println("Please provide a valid integer.")
     }
   }
 }
+

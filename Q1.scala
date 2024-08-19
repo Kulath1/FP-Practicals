@@ -1,37 +1,15 @@
-object CaesarCipherExample extends App {
+object InterestCalculator {
+  def main(args: Array[String]): Unit = {
 
-  def encrypt(text: String, shift: Int): String = {
-    text.map { char =>
-      if (char.isLetter) {
-        val base = if (char.isLower) 'a' else 'A'
-        ((char - base + shift) % 26 + base).toChar
-      } else {
-        char
-      }
+    val calculateInterest: Double => Double = (deposit: Double) => deposit match {
+      case x if x <= 20000 => x * 0.02
+      case x if x <= 200000 => x * 0.04
+      case x if x <= 2000000 => x * 0.035
+      case x if x > 2000000 => x * 0.065
     }
+
+    val depositAmount = 50000.0
+    val interestEarned = calculateInterest(depositAmount)
+    println(s"Interest earned on Rs. $depositAmount is Rs. $interestEarned")
   }
-
-  def decrypt(text: String, shift: Int): String = {
-    text.map { char =>
-      if (char.isLetter) {
-        val base = if (char.isLower) 'a' else 'A'
-        ((char - base - shift + 26) % 26 + base).toChar
-      } else {
-        char
-      }
-    }
-  }
-
-  def cipher(func: (String, Int) => String, text: String, shift: Int): String = {
-    func(text, shift)
-  }
-
-  val text = "Hello, World!"
-  val shift = 3
-
-  val encryptedText = cipher(encrypt, text, shift)
-  println(s"Encrypted: $encryptedText")  // "Khoor, Zruog!"
-
-  val decryptedText = cipher(decrypt, encryptedText, shift)
-  println(s"Decrypted: $decryptedText")  // "Hello, World!"
 }
