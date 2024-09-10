@@ -1,26 +1,43 @@
-object NameFormatter {
+class Account(var balance: Double) {
 
-  def toUpper(name: String): String = name.toUpperCase
-
-  def toLower(name: String): String = name.toLowerCase
-
-  def formatNames(name: String)(formatFunc: String => String): String = formatFunc(name)
-
-  def main(args: Array[String]): Unit = {
-
-    val name1 = "Benny"
-    val name2 = "Niroshan"
-    val name3 = "Saman"
-    val name4 = "Kumara"
-
-    val formattedName1 = formatNames(name1)(toUpper)
-    val formattedName2 = formatNames(name2)(name => name.substring(0, 2).toUpperCase + name.substring(2).toLowerCase)
-    val formattedName3 = formatNames(name3)(toLower)
-    val formattedName4 = formatNames(name4)(name => name.substring(0, 1).toUpperCase + name.substring(1).toLowerCase)
-
-    println(formattedName1) // BENNY
-    println(formattedName2) // NIroshan
-    println(formattedName3) // saman
-    println(formattedName4) // Kumar
+  def deposit(amount: Double): Unit = {
+    require(amount > 0, "Deposit amount must be positive")
+    balance += amount
+    println(s"Deposited $$${amount}. Current balance: $$${balance}")
   }
+
+  def withdraw(amount: Double): Unit = {
+    require(amount > 0, "Withdraw amount must be positive")
+    if (amount > balance) {
+      println("Insufficient funds.")
+    } else {
+      balance -= amount
+      println(s"Withdrew $$${amount}. Current balance: $$${balance}")
+    }
+  }
+
+  def transfer(toAccount: Account, amount: Double): Unit = {
+    require(amount > 0, "Transfer amount must be positive")
+    if (amount > balance) {
+      println("Insufficient funds for transfer.")
+    } else {
+      this.withdraw(amount)
+      toAccount.deposit(amount)
+      println(s"Transferred $$${amount} to the target account.")
+    }
+  }
+
+  override def toString: String = s"Balance: $$${balance}"
+}
+
+object AccountTest extends App {
+  val account1 = new Account(500.0)
+  val account2 = new Account(300.0)
+
+  account1.deposit(100.0)
+  account1.withdraw(50.0)
+  account1.transfer(account2, 200.0)
+
+  println(account1)
+  println(account2)
 }
